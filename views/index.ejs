@@ -2,7 +2,7 @@
   <main class="page-shell">
     <section class="dashboard-hero">
       <div class="hero-copy">
-        <p class="hero-kicker">Sukkur IBA University · Graduate Records</p>
+        <p class="hero-kicker">Sukkur IBA University · <%= currentUser && currentUser.name ? 'Signed in as ' + currentUser.name : 'Graduate Records' %></p>
         <h1>Alumni dashboard</h1>
         <p class="hero-subtitle">Track registered graduates across departments and cities, inspect recent additions, and explore individual alumni dossiers.</p>
         <div class="hero-actions">

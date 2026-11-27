@@ -121,36 +121,43 @@ async function mockQuery(sql, params = []) {
   return [[], []];
 }
 
-let pool = null;
-if (process.env.DB_HOST) {
-  try {
-    pool = mysql.createPool({
-      host: process.env.DB_HOST,
-      user: process.env.DB_USER || "root",
-      password: process.env.DB_PASS || "root",
-      database: process.env.DB_NAME || "alumni_system",
-      waitForConnections: true,
-      connectionLimit: 10,
-      connectTimeout: 2000,
-    });
-  } catch (err) {
-    console.warn("[AI Studio] MySQL pool creation failed — using in-memory mock:", err.message);
-    pool = null;
-  }
-} else {
-  console.warn("[AI Studio] MySQL not configured (DB_HOST unset) — using in-memory mock");
-}
+const pool = mysql.createPool({
+  host: process.env.DB_HOST || "localhost",
+  user: process.env.DB_USER || "root",
+  password: process.env.DB_PASS || "root",
+  database: process.env.DB_NAME || "alumni_system",
+  waitForConnections: true,
+  connectionLimit: 10,
+  connectTimeout: 1500,
+});
+
+const FALLBACK_CODES = new Set([
+  "ECONNREFUSED",
+  "ENOTFOUND",
+  "ETIMEDOUT",
+  "ECONNRESET",
+  "PROTOCOL_CONNECTION_LOST",
+  "ER_ACCESS_DENIED_ERROR",
+  "ER_BAD_DB_ERROR",
+  "ER_NO_SUCH_TABLE",
+]);
+
+let useMock = false;
 
 module.exports = {
   async query(sql, params) {
-    if (!pool) {
+    if (useMock) {
       return mockQuery(sql, params);
     }
     try {
       return await pool.query(sql, params);
     } catch (err) {
-      console.warn("[AI Studio] MySQL query failed — falling back to in-memory mock:", err.message);
-      return mockQuery(sql, params);
+      if (FALLBACK_CODES.has(err.code) || !err.code) {
+        useMock = true;
+        console.warn("MySQL unavailable — falling back to in-memory store:", err.message || err.code);
+        return mockQuery(sql, params);
+      }
+      throw err;
     }
   },
 };

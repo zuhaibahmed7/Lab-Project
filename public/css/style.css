@@ -977,6 +977,20 @@ textarea:focus {
   text-decoration: underline;
 }
 
+.form-alert-error {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  margin-bottom: 18px;
+  border-radius: var(--radius-sm);
+  background-color: var(--error-bg);
+  border: 1px solid var(--error-border);
+  color: var(--error);
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
 /* ---- Message / Status Card ---- */
 .message-card {
   max-width: 520px;
