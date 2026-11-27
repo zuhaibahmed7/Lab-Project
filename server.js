@@ -1,11 +1,28 @@
 const fs = require("fs");
 const path = require("path");
 
-// Load .env if present (Node 20.12+ / 22 built-in)
+// Load .env if present (compatible with all Node.js versions)
 const envPath = path.join(__dirname, ".env");
-if (typeof process.loadEnvFile === "function" && fs.existsSync(envPath)) {
+if (fs.existsSync(envPath)) {
   try {
-    process.loadEnvFile(envPath);
+    const lines = fs.readFileSync(envPath, "utf8").split(/\r?\n/);
+    for (const rawLine of lines) {
+      const line = rawLine.trim();
+      if (!line || line.startsWith("#")) continue;
+      const eqIdx = line.indexOf("=");
+      if (eqIdx <= 0) continue;
+      const key = line.slice(0, eqIdx).trim();
+      let val = line.slice(eqIdx + 1).trim();
+      if (
+        (val.startsWith('"') && val.endsWith('"')) ||
+        (val.startsWith("'") && val.endsWith("'"))
+      ) {
+        val = val.slice(1, -1);
+      }
+      if (!(key in process.env)) {
+        process.env[key] = val;
+      }
+    }
   } catch (err) {
     console.warn("Could not load .env file:", err.message);
   }
@@ -19,17 +36,17 @@ const db = require("./db");
 
 function getMailConfig() {
   const user = (process.env.MAIL_USER || "").trim();
-  const pass = (process.env.MAIL_PASS || "").trim();
+  const pass = (process.env.MAIL_PASS || "").replace(/\s+/g, "");
   const notifyTo = (process.env.ADMIN_EMAIL || user).trim();
   return { user, pass, notifyTo };
 }
 
 function createTransporter(user, pass) {
+  const port = Number(process.env.SMTP_PORT || 465);
   return nodemailer.createTransport({
-    service: "Gmail",
-    host: "smtp.gmail.com",
-    port: 465,
-    secure: true,
+    host: process.env.SMTP_HOST || "smtp.gmail.com",
+    port,
+    secure: port === 465,
     auth: { user, pass },
   });
 }
@@ -45,22 +62,27 @@ async function sendRegistrationEmails(alumnus, loginUrl) {
 
   const transporter = createTransporter(user, pass);
 
-  // 1. Welcome email to the newly registered alumnus (includes login link)
-  const welcomePromise = transporter.sendMail({
-    from: `"AlumniConnect · Sukkur IBA" <${user}>`,
-    to: alumnus.email,
-    subject: "Welcome to the Alumni Community",
-    text:
-      `Hi ${alumnus.full_name},\n\n` +
-      `Your registration was successful. You are now part of the AlumniConnect network.\n\n` +
-      `You can sign in to view your profile and the alumni directory using your email (${alumnus.email}):\n` +
-      `${loginUrl}\n\n` +
-      `AlumniConnect — Sukkur IBA University`,
-  });
+  const tasks = [
+    {
+      label: `welcome email to ${alumnus.email}`,
+      promise: transporter.sendMail({
+        from: `"AlumniConnect · Sukkur IBA" <${user}>`,
+        to: alumnus.email,
+        subject: "Welcome to the Alumni Community",
+        text:
+          `Hi ${alumnus.full_name},\n\n` +
+          `Your registration was successful. You are now part of the AlumniConnect network.\n\n` +
+          `You can sign in to view your profile and the alumni directory using your email (${alumnus.email}):\n` +
+          `${loginUrl}\n\n` +
+          `AlumniConnect — Sukkur IBA University`,
+      }),
+    },
+  ];
 
-  // 2. Notification email to the configured SMTP/admin email
-  const adminNotifyPromise = notifyTo
-    ? transporter.sendMail({
+  if (notifyTo) {
+    tasks.push({
+      label: `admin notification to ${notifyTo}`,
+      promise: transporter.sendMail({
         from: `"AlumniConnect · Sukkur IBA" <${user}>`,
         to: notifyTo,
         subject: `New Alumni Registered: ${alumnus.full_name}`,
@@ -78,10 +100,19 @@ async function sendRegistrationEmails(alumnus, loginUrl) {
           `Location: ${alumnus.city}, ${alumnus.country}\n` +
           `Registered At: ${new Date().toISOString()}\n\n` +
           `Sign in to view directory: ${loginUrl}\n`,
-      })
-    : Promise.resolve();
+      }),
+    });
+  }
 
-  await Promise.all([welcomePromise, adminNotifyPromise]);
+  const results = await Promise.allSettled(tasks.map((t) => t.promise));
+  results.forEach((res, idx) => {
+    const label = tasks[idx].label;
+    if (res.status === "fulfilled") {
+      console.log(`[SMTP] Sent ${label}`);
+    } else {
+      console.error(`[SMTP] Failed ${label}:`, res.reason && res.reason.message ? res.reason.message : res.reason);
+    }
+  });
 }
 
 const app = express();
