@@ -115,6 +115,22 @@ async function sendRegistrationEmails(alumnus, loginUrl) {
   });
 }
 
+function verifySmtpOnStartup() {
+  const { user, pass, notifyTo } = getMailConfig();
+  if (!user || !pass) {
+    console.log("[SMTP] Not configured yet — add MAIL_USER and MAIL_PASS in .env to enable emails.");
+    return;
+  }
+  createTransporter(user, pass)
+    .verify()
+    .then(() => {
+      console.log(`[SMTP] Verified & ready (sender: ${user}, admin notify: ${notifyTo})`);
+    })
+    .catch((err) => {
+      console.error(`[SMTP] Login/connection error for ${user}:`, err.message);
+    });
+}
+
 const app = express();
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
@@ -395,6 +411,7 @@ app.use((err, req, res, next) => {
 });
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, "0.0.0.0", () =>
-  console.log(`Alumni system running at http://0.0.0.0:${PORT}`)
-);
+app.listen(PORT, "0.0.0.0", () => {
+  console.log(`Alumni system running at http://0.0.0.0:${PORT}`);
+  verifySmtpOnStartup();
+});
