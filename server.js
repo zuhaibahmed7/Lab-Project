@@ -127,7 +127,10 @@ function verifySmtpOnStartup() {
       console.log(`[SMTP] Verified & ready (sender: ${user}, admin notify: ${notifyTo})`);
     })
     .catch((err) => {
-      console.error(`[SMTP] Login/connection error for ${user}:`, err.message);
+      console.error(
+        `[SMTP] Login/connection error for "${user}" (app password length: ${pass.length}):`,
+        err.message
+      );
     });
 }
 
