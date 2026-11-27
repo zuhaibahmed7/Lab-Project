@@ -1,0 +1,17 @@
+{
+  "name": "alumni-node",
+  "version": "1.0.0",
+  "description": "Alumni Management System - Node.js, Express, EJS, MySQL",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "ejs": "^3.1.10",
+    "express": "^4.19.2",
+    "express-session": "^1.19.0",
+    "mysql2": "^3.11.0",
+    "nodemailer": "^10.6.0"
+  }
+}

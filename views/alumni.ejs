@@ -1,0 +1,30 @@
+<%- include('partials/header', { title: 'Alumni Directory' }) %>
+  <main>
+    <section class="directory">
+      <h1>Alumni Directory</h1>
+      <form class="search-box" action="/alumni" method="get">
+        <input type="text" name="q" value="<%= q %>" placeholder="Search name, batch, department, company or city">
+        <button type="submit">Search</button>
+      </form>
+      <table>
+        <thead>
+          <tr><th>Name</th><th>Batch</th><th>Department</th><th>Company</th><th>City</th><th>Profile</th></tr>
+        </thead>
+        <tbody>
+        <% if (rows.length) { rows.forEach(r => { %>
+          <tr>
+            <td data-label="Name"><%= r.full_name %></td>
+            <td data-label="Batch"><%= r.graduation_year %></td>
+            <td data-label="Department"><%= r.department %></td>
+            <td data-label="Company"><%= r.company %></td>
+            <td data-label="City"><%= r.city %></td>
+            <td data-label="Profile"><a href="/profile/<%= r.id %>">View</a></td>
+          </tr>
+        <% }) } else { %>
+          <tr><td colspan="6">No alumni found.</td></tr>
+        <% } %>
+        </tbody>
+      </table>
+    </section>
+  </main>
+<%- include('partials/footer') %>

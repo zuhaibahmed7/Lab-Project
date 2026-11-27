@@ -1,0 +1,34 @@
+<%- include('partials/header', { title: 'Dashboard' }) %>
+  <main>
+    <section class="hero">
+      <h1>Alumni dashboard</h1>
+      <p>Registered alumni and recent additions</p>
+    </section>
+    <section class="dashboard-section">
+      <h2>Overview</h2>
+      <div class="stats">
+        <div class="stat-card"><h3>Total alumni</h3><p><%= s.total %></p></div>
+        <div class="stat-card"><h3>Departments</h3><p><%= s.depts %></p></div>
+        <div class="stat-card"><h3>Cities</h3><p><%= s.cities %></p></div>
+        <div class="stat-card"><h3>New in last 7 days</h3><p><%= s.recent %></p></div>
+      </div>
+    </section>
+    <section class="dashboard-section recent-alumni">
+      <h2>Recently registered</h2>
+      <table>
+        <thead><tr><th>Name</th><th>Batch</th><th>Department</th></tr></thead>
+        <tbody>
+        <% if (latest.length) { latest.forEach(r => { %>
+          <tr>
+            <td data-label="Name"><a href="/profile/<%= r.id %>"><%= r.full_name %></a></td>
+            <td data-label="Batch"><%= r.graduation_year %></td>
+            <td data-label="Department"><%= r.department %></td>
+          </tr>
+        <% }) } else { %>
+          <tr><td colspan="3">No alumni registered yet.</td></tr>
+        <% } %>
+        </tbody>
+      </table>
+    </section>
+  </main>
+<%- include('partials/footer') %>

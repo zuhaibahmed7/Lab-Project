@@ -1,0 +1,537 @@
+/* ============================================
+   Alumni Management System — style.css
+   Lab-04: CSS Selectors, Box Model, Flexbox,
+   Grid, Pseudo-classes, Forms, Tables
+   ============================================ */
+
+/* ---- Design tokens ---- */
+:root {
+  --ink: #1d2b3a;
+  --ink-light: #2e415a;
+  --brass: #a9762f;
+  --brass-dark: #8c5f22;
+  --sage: #4f6d5c;
+  --paper: #f6f3ec;
+  --card: #ffffff;
+  --text: #2b2a27;
+  --text-muted: #6b6759;
+  --border: #ddd6c7;
+  --shadow: 0 1px 2px rgba(29, 43, 58, 0.06);
+  --radius: 10px;
+}
+
+/* ---- Exercise 1: reset & base ---- */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Inter", "Segoe UI", Arial, sans-serif;
+  background-color: var(--paper);
+  color: var(--text);
+  line-height: 1.6;
+}
+
+h1, h2, h3 {
+  font-family: "Fraunces", Georgia, "Times New Roman", serif;
+  color: var(--ink);
+  font-weight: 600;
+  margin: 0 0 0.4em;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+header.site-header {
+  background-color: var(--ink);
+  color: #f2ede0;
+  padding: 16px 32px;
+  font-family: "Fraunces", serif;
+  font-size: 1.15rem;
+}
+
+main {
+  display: block;
+}
+
+main > h1.page-title {
+  text-align: center;
+  padding-top: 28px;
+}
+
+/* ---- Exercise 3: Navigation bar (Flexbox) ---- */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--ink-light);
+  padding: 16px 32px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.navbar .logo {
+  font-family: "Fraunces", serif;
+  font-size: 1.3rem;
+  color: #f2ede0;
+  font-weight: 600;
+}
+
+.navbar .nav-links {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar .nav-links li a {
+  color: #d8d3c4;
+  font-size: 0.95rem;
+  padding: 6px 4px;
+  border-bottom: 2px solid transparent;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.navbar .nav-links li a:hover,
+.navbar .nav-links li a.active {
+  color: var(--brass);
+  border-bottom: 2px solid var(--brass);
+}
+
+/* ---- Exercise 2: page layout / containers ---- */
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.hero {
+  max-width: 1100px;
+  margin: 36px auto 8px;
+  padding: 0 24px;
+}
+
+.hero h1 {
+  font-size: 2.1rem;
+  margin-bottom: 4px;
+}
+
+.hero p {
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.dashboard-section {
+  max-width: 1100px;
+  margin: 28px auto;
+  padding: 0 24px;
+}
+
+.dashboard-section > h2 {
+  font-size: 1.3rem;
+  border-left: 4px solid var(--brass);
+  padding-left: 12px;
+  margin-bottom: 16px;
+}
+
+footer.site-footer {
+  background-color: var(--ink);
+  color: #b9b2a0;
+  text-align: center;
+  padding: 16px;
+  margin-top: 48px;
+  font-size: 0.85rem;
+}
+
+/* ---- Exercise 4: Dashboard statistics cards (CSS Grid) ---- */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.stat-card {
+  background-color: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  text-align: left;
+}
+
+.stat-card h3 {
+  font-size: 0.85rem;
+  text-transform: none;
+  color: var(--text-muted);
+  font-family: "Inter", sans-serif;
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+
+.stat-card p {
+  font-size: 2rem;
+  font-family: "Fraunces", serif;
+  color: var(--brass-dark);
+  margin: 0;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 900px) {
+  .stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 540px) {
+  .stats {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---- Recent alumni preview (index page) ---- */
+.recent-alumni table {
+  width: 100%;
+}
+
+/* ---- Exercise 5: Alumni profile card ---- */
+.profile-wrapper {
+  display: flex;
+  justify-content: center;
+  padding: 48px 24px;
+}
+
+.profile-card {
+  background-color: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 36px;
+  max-width: 380px;
+  width: 100%;
+  text-align: center;
+  box-shadow: var(--shadow);
+}
+
+.profile-image img {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 4px solid var(--paper);
+  outline: 2px solid var(--brass);
+  margin-bottom: 16px;
+}
+
+.profile-card h2 {
+  margin-bottom: 2px;
+}
+
+.profile-card .designation {
+  color: var(--brass-dark);
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+.profile-info {
+  text-align: left;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 16px 4px;
+  margin-bottom: 20px;
+}
+
+.profile-info p {
+  margin: 6px 0;
+  font-size: 0.95rem;
+}
+
+.profile-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+/* ---- Buttons ---- */
+button,
+.btn {
+  font-family: "Inter", sans-serif;
+  font-size: 0.9rem;
+  border: none;
+  border-radius: 6px;
+  padding: 12px 16px;
+  cursor: pointer;
+  background-color: var(--ink);
+  color: #f2ede0;
+  transition: background-color 0.2s ease;
+}
+
+button:hover,
+.btn:hover {
+  background-color: var(--ink-light);
+}
+
+.profile-actions button:last-child {
+  background-color: var(--brass);
+  color: #ffffff;
+}
+
+.profile-actions button:last-child:hover {
+  background-color: var(--brass-dark);
+}
+
+/* ---- Exercise 6: Alumni directory (search + table) ---- */
+.directory {
+  max-width: 1000px;
+  margin: 40px auto;
+  padding: 0 24px;
+}
+
+.directory h1 {
+  text-align: center;
+}
+
+.search-box {
+  display: flex;
+  gap: 10px;
+  margin: 24px 0;
+}
+
+.search-box input {
+  flex: 1;
+  padding: 12px 16px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-family: "Inter", sans-serif;
+}
+
+.search-box input:focus {
+  outline: none;
+  border-color: var(--brass);
+  box-shadow: 0 0 0 3px rgba(169, 118, 47, 0.18);
+}
+
+.search-box button {
+  background-color: var(--brass);
+  color: #fff;
+}
+
+.search-box button:hover {
+  background-color: var(--brass-dark);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: var(--card);
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+
+thead {
+  background-color: var(--ink);
+}
+
+thead th {
+  color: #f2ede0;
+  text-align: left;
+  padding: 12px 16px;
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+tbody td {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.95rem;
+  font-variant-numeric: tabular-nums;
+}
+
+tbody tr:last-child td {
+  border-bottom: none;
+}
+
+tbody tr:hover {
+  background-color: #f2ecdd;
+}
+
+/* ---- Exercise 7: Alumni registration form ---- */
+.form-container {
+  max-width: 520px;
+  margin: 40px auto;
+  padding: 32px;
+  background-color: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.form-container h1 {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.form-container label {
+  display: block;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--ink-light);
+  margin: 16px 0 6px;
+}
+
+.form-container input,
+.form-container select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-family: "Inter", sans-serif;
+  background-color: #fbfaf6;
+}
+.form-container input:focus,
+.form-container select:focus {
+  outline: none;
+  border-color: var(--brass);
+  background-color: #ffffff;
+  box-shadow: 0 0 0 3px rgba(169, 118, 47, 0.18);
+}
+
+.form-container button {
+  width: 100%;
+  margin-top: 24px;
+  padding: 12px;
+  font-size: 1rem;
+  font-weight: 500;
+  background-color: var(--brass);
+}
+
+.form-container button:hover {
+  background-color: var(--brass-dark);
+}
+
+/* ---- Responsive tweaks ---- */
+@media (max-width: 700px) {
+  .navbar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .navbar .nav-links {
+    flex-wrap: wrap;
+    gap: 14px;
+  }
+
+  table, thead, tbody, th, td, tr {
+    display: block;
+  }
+
+  thead tr {
+    display: none;
+  }
+
+  tbody tr {
+    border-bottom: 2px solid var(--border);
+    padding: 10px 0;
+  }
+
+  tbody td {
+    border: none;
+    padding: 6px 16px;
+  }
+
+  tbody td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: var(--ink-light);
+    display: inline-block;
+    width: 110px;
+  }
+}
+
+
+/* ============================================
+   Lab-05 additions (form sections, messages,
+   profile avatar, link-buttons)
+   ============================================ */
+
+/* Wider form + section headings */
+.form-container { max-width: 640px; }
+
+.form-container h2 {
+  font-size: 1.1rem;
+  margin: 28px 0 4px;
+  padding-bottom: 6px;
+  border-bottom: 2px solid var(--border);
+}
+
+.form-container textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-family: "Inter", sans-serif;
+  background-color: #fbfaf6;
+  resize: vertical;
+}
+
+.form-container textarea:focus {
+  outline: none;
+  border-color: var(--brass);
+  background-color: #ffffff;
+  box-shadow: 0 0 0 3px rgba(169, 118, 47, 0.18);
+}
+
+/* Radio buttons (Male / Female) */
+.radio-group { display: flex; gap: 24px; }
+.form-container .radio-group label { font-weight: 400; margin: 6px 0 0; }
+.form-container .radio-group input { width: auto; margin-right: 6px; }
+
+/* Success / error message page (register.php) */
+.message-box { text-align: center; }
+.message-box.success { border-top: 5px solid var(--sage); }
+.message-box.error   { border-top: 5px solid #b3402f; }
+.message-box p { color: var(--text-muted); margin-bottom: 24px; }
+
+/* Links that look like buttons */
+a.btn { display: inline-block; text-align: center; }
+a.btn-accent { background-color: var(--brass); color: #fff; }
+a.btn-accent:hover { background-color: var(--brass-dark); }
+
+/* ---- Login form + auth nav ---- */
+.login-form { margin-top: 56px; }
+.login-form button { width: 100%; margin-top: 24px; padding: 12px; font-size: 1rem; font-weight: 500; background-color: var(--brass); }
+.login-form button:hover { background-color: var(--brass-dark); }
+.auth-alt { text-align: center; color: var(--text-muted); font-size: 0.9rem; margin: 20px 0 0; }
+.auth-alt a { color: var(--brass-dark); font-weight: 500; }
+.nav-auth { color: #f2ede0; }
+
+/* Links inside tables */
+tbody td a { color: var(--brass-dark); font-weight: 600; }
+tbody td a:hover { text-decoration: underline; }
+
+/* Letter avatar instead of a photo */
+.avatar {
+  width: 120px;
+  height: 120px;
+  margin: 0 auto 16px;
+  border-radius: 50%;
+  background-color: var(--ink);
+  color: #f2ede0;
+  font-family: "Fraunces", serif;
+  font-size: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  outline: 2px solid var(--brass);
+  outline-offset: 3px;
+}

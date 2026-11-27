@@ -1,0 +1,28 @@
+<%- include('partials/header', { title: 'Profile' }) %>
+  <main>
+    <div class="profile-wrapper">
+    <% if (person) { %>
+      <div class="profile-card">
+        <div class="avatar"><%= person.full_name.charAt(0).toUpperCase() %></div>
+        <h2><%= person.full_name %></h2>
+        <p class="designation"><%= person.current_job || "Alumnus" %><%= person.company ? " at " + person.company : "" %></p>
+        <div class="profile-info">
+          <p><strong>Batch:</strong> <%= person.graduation_year %></p>
+          <p><strong>Degree:</strong> <%= person.degree %></p>
+          <p><strong>Department:</strong> <%= person.department %></p>
+          <p><strong>Student ID:</strong> <%= person.student_id %></p>
+          <p><strong>City:</strong> <%= person.city %>, <%= person.country %></p>
+          <p><strong>Email:</strong> <%= person.email %></p>
+          <p><strong>Phone:</strong> <%= person.phone %></p>
+        </div>
+        <div class="profile-actions">
+          <a class="btn" href="/alumni">Back to Directory</a>
+          <a class="btn btn-accent" href="mailto:<%= person.email %>">Contact</a>
+        </div>
+      </div>
+    <% } else { %>
+      <div class="profile-card"><h2>No profile found</h2><p>Register an alumnus first.</p></div>
+    <% } %>
+    </div>
+  </main>
+<%- include('partials/footer') %>

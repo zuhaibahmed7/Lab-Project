@@ -1,0 +1,87 @@
+<%- include('partials/header', { title: 'Register' }) %>
+  <main>
+    <section class="form-container">
+      <h1>Alumni Registration</h1>
+
+      <!-- Data is sent to the /register route using POST -->
+      <form action="/register" method="post">
+
+        <h2>Personal Information</h2>
+        <label for="full_name">Full Name</label>
+        <input type="text" id="full_name" name="full_name" placeholder="Full name" required>
+
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" placeholder="you@example.com" required>
+
+        <label for="phone">Phone Number</label>
+        <input type="text" id="phone" name="phone" placeholder="03XXXXXXXXX" required>
+
+        <label>Gender</label>
+        <div class="radio-group">
+          <label><input type="radio" name="gender" value="Male" required> Male</label>
+          <label><input type="radio" name="gender" value="Female"> Female</label>
+        </div>
+
+        <label for="date_of_birth">Date of Birth</label>
+        <input type="date" id="date_of_birth" name="date_of_birth" required>
+
+        <h2>Academic Information</h2>
+        <label for="student_id">Student ID / Registration No.</label>
+        <input type="text" id="student_id" name="student_id" placeholder="Student ID" required>
+
+        <label for="degree">Degree / Program</label>
+        <select id="degree" name="degree" required>
+          <option value="">Select Degree</option>
+          <option>BS Computer Science</option>
+          <option>BS Software Engineering</option>
+          <option>BS Information Technology</option>
+          <option>BS Artificial Intelligence</option>
+          <option>MS Computer Science</option>
+          <option>MBA</option>
+        </select>
+
+        <label for="department">Department</label>
+        <select id="department" name="department" required>
+          <option value="">Select Department</option>
+          <option>Computer Science</option>
+          <option>Software Engineering</option>
+          <option>Information Technology</option>
+          <option>Business Administration</option>
+          <option>Electrical Engineering</option>
+        </select>
+
+        <label for="graduation_year">Graduation Year (Batch)</label>
+        <select id="graduation_year" name="graduation_year" required>
+          <option value="">Select Year</option>
+          <option>2026</option><option>2025</option><option>2024</option>
+          <option>2023</option><option>2022</option><option>2021</option>
+          <option>2020</option><option>2019</option><option>2018</option>
+          <option>2017</option><option>2016</option><option>2015</option>
+        </select>
+
+        <h2>Employment Information</h2>
+        <label for="current_job">Current Job / Designation</label>
+        <input type="text" id="current_job" name="current_job" placeholder="Software Engineer">
+
+        <label for="company">Current Organization</label>
+        <input type="text" id="company" name="company" placeholder="Organization">
+
+        <h2>Current Address</h2>
+        <label for="city">City</label>
+        <input type="text" id="city" name="city" placeholder="City" required>
+
+        <label for="country">Country</label>
+        <input type="text" id="country" name="country" value="Pakistan" required>
+
+        <label for="address">Complete Address</label>
+        <textarea id="address" name="address" rows="3" placeholder="Current address"></textarea>
+
+        <h2>Account Information</h2>
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" placeholder="At least 6 characters" required>
+
+        <button type="submit">Register</button>
+      </form>
+    </section>
+  </main>
+<%- include('partials/footer') %>
