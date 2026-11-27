@@ -1,28 +1,85 @@
 <%- include('partials/header', { title: 'Profile' }) %>
-  <main>
-    <div class="profile-wrapper">
+  <main class="page-shell">
     <% if (person) { %>
-      <div class="profile-card">
-        <div class="avatar"><%= person.full_name.charAt(0).toUpperCase() %></div>
-        <h2><%= person.full_name %></h2>
-        <p class="designation"><%= person.current_job || "Alumnus" %><%= person.company ? " at " + person.company : "" %></p>
-        <div class="profile-info">
-          <p><strong>Batch:</strong> <%= person.graduation_year %></p>
-          <p><strong>Degree:</strong> <%= person.degree %></p>
-          <p><strong>Department:</strong> <%= person.department %></p>
-          <p><strong>Student ID:</strong> <%= person.student_id %></p>
-          <p><strong>City:</strong> <%= person.city %>, <%= person.country %></p>
-          <p><strong>Email:</strong> <%= person.email %></p>
-          <p><strong>Phone:</strong> <%= person.phone %></p>
+      <section class="profile-dossier">
+        <div class="profile-top">
+          <div class="profile-identity">
+            <div class="avatar" aria-hidden="true"><%= person.full_name.charAt(0).toUpperCase() %></div>
+            <div>
+              <h1><%= person.full_name %></h1>
+              <p class="profile-designation">
+                <%= person.current_job || "Alumnus" %><%= person.company ? " at " + person.company : "" %>
+              </p>
+              <p class="profile-meta-line">
+                Batch <%= person.graduation_year %> · <%= person.degree %> · <%= person.city %>, <%= person.country %>
+              </p>
+            </div>
+          </div>
+
+          <div class="profile-actions">
+            <a class="btn btn-secondary" href="/alumni">Back to Directory</a>
+            <a class="btn btn-primary" href="mailto:<%= person.email %>">Send Email</a>
+          </div>
         </div>
-        <div class="profile-actions">
-          <a class="btn" href="/alumni">Back to Directory</a>
-          <a class="btn btn-accent" href="mailto:<%= person.email %>">Contact</a>
+
+        <div class="profile-grid">
+          <div class="profile-section">
+            <h2>Academic Record</h2>
+            <dl class="detail-list">
+              <div class="detail-row">
+                <dt>Batch</dt>
+                <dd><%= person.graduation_year %></dd>
+              </div>
+              <div class="detail-row">
+                <dt>Degree</dt>
+                <dd><%= person.degree %></dd>
+              </div>
+              <div class="detail-row">
+                <dt>Department</dt>
+                <dd><%= person.department %></dd>
+              </div>
+              <div class="detail-row">
+                <dt>Student ID</dt>
+                <dd><%= person.student_id %></dd>
+              </div>
+            </dl>
+          </div>
+
+          <div class="profile-section">
+            <h2>Contact &amp; Location</h2>
+            <dl class="detail-list">
+              <div class="detail-row">
+                <dt>Email</dt>
+                <dd><a href="mailto:<%= person.email %>"><%= person.email %></a></dd>
+              </div>
+              <div class="detail-row">
+                <dt>Phone</dt>
+                <dd><%= person.phone %></dd>
+              </div>
+              <div class="detail-row">
+                <dt>Location</dt>
+                <dd><%= person.city %>, <%= person.country %></dd>
+              </div>
+              <% if (person.address) { %>
+                <div class="detail-row">
+                  <dt>Address</dt>
+                  <dd><%= person.address %></dd>
+                </div>
+              <% } %>
+            </dl>
+          </div>
         </div>
-      </div>
+      </section>
     <% } else { %>
-      <div class="profile-card"><h2>No profile found</h2><p>Register an alumnus first.</p></div>
+      <section class="message-card">
+        <div class="status-indicator error">No record available</div>
+        <h1>No profile found</h1>
+        <p>There are no alumni profiles in the directory yet. Register an alumnus to view their dossier here.</p>
+        <div class="profile-actions">
+          <a class="btn btn-primary" href="/register">Register Alumnus</a>
+          <a class="btn btn-secondary" href="/alumni">Go to Directory</a>
+        </div>
+      </section>
     <% } %>
-    </div>
   </main>
 <%- include('partials/footer') %>

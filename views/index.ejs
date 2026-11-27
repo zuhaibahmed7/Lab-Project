@@ -1,34 +1,79 @@
 <%- include('partials/header', { title: 'Dashboard' }) %>
-  <main>
-    <section class="hero">
-      <h1>Alumni dashboard</h1>
-      <p>Registered alumni and recent additions</p>
-    </section>
-    <section class="dashboard-section">
-      <h2>Overview</h2>
-      <div class="stats">
-        <div class="stat-card"><h3>Total alumni</h3><p><%= s.total %></p></div>
-        <div class="stat-card"><h3>Departments</h3><p><%= s.depts %></p></div>
-        <div class="stat-card"><h3>Cities</h3><p><%= s.cities %></p></div>
-        <div class="stat-card"><h3>New in last 7 days</h3><p><%= s.recent %></p></div>
+  <main class="page-shell">
+    <section class="dashboard-hero">
+      <div class="hero-copy">
+        <p class="hero-kicker">Sukkur IBA University · Graduate Records</p>
+        <h1>Alumni dashboard</h1>
+        <p class="hero-subtitle">Track registered graduates across departments and cities, inspect recent additions, and explore individual alumni dossiers.</p>
+        <div class="hero-actions">
+          <a href="/alumni" class="btn btn-primary">Browse Directory</a>
+          <a href="/register" class="btn btn-secondary">Register Alumnus</a>
+        </div>
+      </div>
+      <div class="hero-media">
+        <img src="/assets/aistudio/image_0aa5a6e2.png" alt="Sukkur IBA University campus" referrerpolicy="no-referrer" onerror="this.style.display='none'">
+        <div class="hero-media-scrim">
+          <span class="hero-media-caption">AlumniConnect · Official Graduate Directory</span>
+        </div>
       </div>
     </section>
-    <section class="dashboard-section recent-alumni">
-      <h2>Recently registered</h2>
-      <table>
-        <thead><tr><th>Name</th><th>Batch</th><th>Department</th></tr></thead>
-        <tbody>
-        <% if (latest.length) { latest.forEach(r => { %>
-          <tr>
-            <td data-label="Name"><a href="/profile/<%= r.id %>"><%= r.full_name %></a></td>
-            <td data-label="Batch"><%= r.graduation_year %></td>
-            <td data-label="Department"><%= r.department %></td>
-          </tr>
-        <% }) } else { %>
-          <tr><td colspan="3">No alumni registered yet.</td></tr>
+
+    <section class="stats-section" aria-label="Alumni overview statistics">
+      <div class="stats">
+        <div class="stat-card">
+          <h3>Total alumni</h3>
+          <p><%= s.total %></p>
+        </div>
+        <div class="stat-card">
+          <h3>Departments</h3>
+          <p><%= s.depts %></p>
+        </div>
+        <div class="stat-card">
+          <h3>Cities</h3>
+          <p><%= s.cities %></p>
+        </div>
+        <div class="stat-card">
+          <h3>New in last 7 days</h3>
+          <p><%= s.recent %></p>
+        </div>
+      </div>
+    </section>
+
+    <section class="dashboard-section">
+      <div class="section-header">
+        <h2>Recently registered</h2>
+        <a href="/alumni" class="section-link">View all alumni</a>
+      </div>
+
+      <div class="table-card">
+        <% if (latest.length) { %>
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Batch</th>
+                <th>Department</th>
+                <th>Profile</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% latest.forEach(r => { %>
+                <tr>
+                  <td class="cell-primary" data-label="Name"><a href="/profile/<%= r.id %>"><%= r.full_name %></a></td>
+                  <td data-label="Batch"><%= r.graduation_year %></td>
+                  <td data-label="Department"><%= r.department %></td>
+                  <td data-label="Profile"><a href="/profile/<%= r.id %>">View dossier</a></td>
+                </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        <% } else { %>
+          <div class="table-empty">
+            <p>No alumni records have been added yet.</p>
+            <a href="/register" class="btn btn-primary">Register first alumnus</a>
+          </div>
         <% } %>
-        </tbody>
-      </table>
+      </div>
     </section>
   </main>
 <%- include('partials/footer') %>

@@ -4,6 +4,8 @@
   "description": "Alumni Management System - Node.js, Express, EJS, MySQL",
   "main": "server.js",
   "scripts": {
+    "dev": "node server.js",
+    "build": "node --check server.js && node --check db.js",
     "start": "node server.js"
   },
   "dependencies": {

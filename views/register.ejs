@@ -1,86 +1,141 @@
 <%- include('partials/header', { title: 'Register' }) %>
-  <main>
+  <main class="page-shell">
     <section class="form-container">
-      <h1>Alumni Registration</h1>
+      <div class="form-page-header">
+        <h1>Alumni Registration</h1>
+        <p>Complete your graduate profile to join the AlumniConnect directory.</p>
+      </div>
 
-      <!-- Data is sent to the /register route using POST -->
       <form action="/register" method="post">
+        <div class="form-section">
+          <h2 class="form-section-title">01. Personal Information</h2>
+          <div class="form-grid">
+            <div class="field field-full">
+              <label for="full_name">Full Name</label>
+              <input type="text" id="full_name" name="full_name" placeholder="e.g. Ayesha Siddiqui" autocomplete="name" required>
+            </div>
 
-        <h2>Personal Information</h2>
-        <label for="full_name">Full Name</label>
-        <input type="text" id="full_name" name="full_name" placeholder="Full name" required>
+            <div class="field">
+              <label for="email">Email Address</label>
+              <input type="email" id="email" name="email" placeholder="you@example.com" autocomplete="email" required>
+            </div>
 
-        <label for="email">Email</label>
-        <input type="email" id="email" name="email" placeholder="you@example.com" required>
+            <div class="field">
+              <label for="phone">Phone Number</label>
+              <input type="text" id="phone" name="phone" placeholder="03XXXXXXXXX" autocomplete="tel" required>
+            </div>
 
-        <label for="phone">Phone Number</label>
-        <input type="text" id="phone" name="phone" placeholder="03XXXXXXXXX" required>
+            <div class="field">
+              <label for="date_of_birth">Date of Birth</label>
+              <input type="date" id="date_of_birth" name="date_of_birth" required>
+            </div>
 
-        <label>Gender</label>
-        <div class="radio-group">
-          <label><input type="radio" name="gender" value="Male" required> Male</label>
-          <label><input type="radio" name="gender" value="Female"> Female</label>
+            <div class="field">
+              <span class="field-label">Gender</span>
+              <div class="radio-group">
+                <label class="radio-option">
+                  <input type="radio" name="gender" value="Male" required>
+                  <span>Male</span>
+                </label>
+                <label class="radio-option">
+                  <input type="radio" name="gender" value="Female">
+                  <span>Female</span>
+                </label>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <label for="date_of_birth">Date of Birth</label>
-        <input type="date" id="date_of_birth" name="date_of_birth" required>
+        <div class="form-section">
+          <h2 class="form-section-title">02. Academic Record</h2>
+          <div class="form-grid">
+            <div class="field">
+              <label for="student_id">Student ID / Registration No.</label>
+              <input type="text" id="student_id" name="student_id" placeholder="e.g. 021-20-0142" required>
+            </div>
 
-        <h2>Academic Information</h2>
-        <label for="student_id">Student ID / Registration No.</label>
-        <input type="text" id="student_id" name="student_id" placeholder="Student ID" required>
+            <div class="field">
+              <label for="graduation_year">Graduation Year (Batch)</label>
+              <select id="graduation_year" name="graduation_year" required>
+                <option value="">Select Year</option>
+                <% const maxGradYear = Math.max(new Date().getFullYear() + 4, 2030); %>
+                <% for (let y = maxGradYear; y >= 2015; y--) { %>
+                  <option value="<%= y %>"><%= y %></option>
+                <% } %>
+              </select>
+            </div>
 
-        <label for="degree">Degree / Program</label>
-        <select id="degree" name="degree" required>
-          <option value="">Select Degree</option>
-          <option>BS Computer Science</option>
-          <option>BS Software Engineering</option>
-          <option>BS Information Technology</option>
-          <option>BS Artificial Intelligence</option>
-          <option>MS Computer Science</option>
-          <option>MBA</option>
-        </select>
+            <div class="field">
+              <label for="degree">Degree / Program</label>
+              <select id="degree" name="degree" required>
+                <option value="">Select Degree</option>
+                <option>BS Computer Science</option>
+                <option>BS Software Engineering</option>
+                <option>BS Information Technology</option>
+                <option>BS Artificial Intelligence</option>
+                <option>MS Computer Science</option>
+                <option>MBA</option>
+              </select>
+            </div>
 
-        <label for="department">Department</label>
-        <select id="department" name="department" required>
-          <option value="">Select Department</option>
-          <option>Computer Science</option>
-          <option>Software Engineering</option>
-          <option>Information Technology</option>
-          <option>Business Administration</option>
-          <option>Electrical Engineering</option>
-        </select>
+            <div class="field">
+              <label for="department">Department</label>
+              <select id="department" name="department" required>
+                <option value="">Select Department</option>
+                <option>Computer Science</option>
+                <option>Software Engineering</option>
+                <option>Information Technology</option>
+                <option>Business Administration</option>
+                <option>Electrical Engineering</option>
+              </select>
+            </div>
+          </div>
+        </div>
 
-        <label for="graduation_year">Graduation Year (Batch)</label>
-        <select id="graduation_year" name="graduation_year" required>
-          <option value="">Select Year</option>
-          <option>2026</option><option>2025</option><option>2024</option>
-          <option>2023</option><option>2022</option><option>2021</option>
-          <option>2020</option><option>2019</option><option>2018</option>
-          <option>2017</option><option>2016</option><option>2015</option>
-        </select>
+        <div class="form-section">
+          <h2 class="form-section-title">03. Employment &amp; Location</h2>
+          <div class="form-grid">
+            <div class="field">
+              <label for="current_job">Current Job / Designation</label>
+              <input type="text" id="current_job" name="current_job" placeholder="e.g. Software Engineer">
+            </div>
 
-        <h2>Employment Information</h2>
-        <label for="current_job">Current Job / Designation</label>
-        <input type="text" id="current_job" name="current_job" placeholder="Software Engineer">
+            <div class="field">
+              <label for="company">Current Organization</label>
+              <input type="text" id="company" name="company" placeholder="e.g. Systems Limited">
+            </div>
 
-        <label for="company">Current Organization</label>
-        <input type="text" id="company" name="company" placeholder="Organization">
+            <div class="field">
+              <label for="city">City</label>
+              <input type="text" id="city" name="city" placeholder="e.g. Sukkur" required>
+            </div>
 
-        <h2>Current Address</h2>
-        <label for="city">City</label>
-        <input type="text" id="city" name="city" placeholder="City" required>
+            <div class="field">
+              <label for="country">Country</label>
+              <input type="text" id="country" name="country" value="Pakistan" required>
+            </div>
 
-        <label for="country">Country</label>
-        <input type="text" id="country" name="country" value="Pakistan" required>
+            <div class="field field-full">
+              <label for="address">Complete Address</label>
+              <textarea id="address" name="address" rows="3" placeholder="Current residential or mailing address (optional)"></textarea>
+            </div>
+          </div>
+        </div>
 
-        <label for="address">Complete Address</label>
-        <textarea id="address" name="address" rows="3" placeholder="Current address"></textarea>
+        <div class="form-section">
+          <h2 class="form-section-title">04. Account Security</h2>
+          <div class="form-grid">
+            <div class="field field-full">
+              <label for="password">Password</label>
+              <input type="password" id="password" name="password" placeholder="At least 6 characters" autocomplete="new-password" required>
+            </div>
+          </div>
+        </div>
 
-        <h2>Account Information</h2>
-        <label for="password">Password</label>
-        <input type="password" id="password" name="password" placeholder="At least 6 characters" required>
-
-        <button type="submit">Register</button>
+        <div class="form-submit-row">
+          <span class="form-submit-note">Already registered? <a href="/login" class="inline-link">Log in</a></span>
+          <button type="submit" class="btn-primary">Complete Registration</button>
+        </div>
       </form>
     </section>
   </main>

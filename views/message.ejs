@@ -1,13 +1,32 @@
 <%- include('partials/header') %>
-  <main>
-    <section class="form-container message-box <%= type %>">
+  <main class="page-shell">
+    <section class="message-card">
+      <div class="status-indicator <%= type %>">
+        <% if (type === "success") { %>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+          <span>Registration Complete</span>
+        <% } else { %>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="12"></line>
+            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+          </svg>
+          <span>Attention Required</span>
+        <% } %>
+      </div>
+
       <h1><%= title %></h1>
       <p><%= text %></p>
+
       <div class="profile-actions">
         <% if (type === "success") { %>
-          <a class="btn" href="/alumni">View Alumni Directory</a>
+          <a class="btn btn-primary" href="/alumni">View Alumni Directory</a>
+          <a class="btn btn-secondary" href="/">Go to Dashboard</a>
         <% } else { %>
-          <a class="btn" href="/register">Go Back</a>
+          <a class="btn btn-primary" href="/register">Back to Registration</a>
+          <a class="btn btn-secondary" href="/login">Sign In</a>
         <% } %>
       </div>
     </section>

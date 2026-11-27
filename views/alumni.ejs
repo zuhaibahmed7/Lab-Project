@@ -1,30 +1,69 @@
 <%- include('partials/header', { title: 'Alumni Directory' }) %>
-  <main>
-    <section class="directory">
-      <h1>Alumni Directory</h1>
-      <form class="search-box" action="/alumni" method="get">
-        <input type="text" name="q" value="<%= q %>" placeholder="Search name, batch, department, company or city">
-        <button type="submit">Search</button>
-      </form>
-      <table>
-        <thead>
-          <tr><th>Name</th><th>Batch</th><th>Department</th><th>Company</th><th>City</th><th>Profile</th></tr>
-        </thead>
-        <tbody>
-        <% if (rows.length) { rows.forEach(r => { %>
-          <tr>
-            <td data-label="Name"><%= r.full_name %></td>
-            <td data-label="Batch"><%= r.graduation_year %></td>
-            <td data-label="Department"><%= r.department %></td>
-            <td data-label="Company"><%= r.company %></td>
-            <td data-label="City"><%= r.city %></td>
-            <td data-label="Profile"><a href="/profile/<%= r.id %>">View</a></td>
-          </tr>
-        <% }) } else { %>
-          <tr><td colspan="6">No alumni found.</td></tr>
-        <% } %>
-        </tbody>
-      </table>
-    </section>
+  <main class="page-shell">
+    <div class="page-header">
+      <div>
+        <h1>Alumni Directory</h1>
+        <div class="page-meta">
+          <span><%= rows.length %> <%= rows.length === 1 ? 'graduate listed' : 'graduates listed' %></span>
+          <% if (q) { %>
+            <span aria-hidden="true">·</span>
+            <span>Filtered by "<%= q %>"</span>
+          <% } %>
+        </div>
+      </div>
+      <a href="/register" class="btn btn-primary">Register Alumnus</a>
+    </div>
+
+    <form class="search-box" action="/alumni" method="get" role="search">
+      <div class="search-input-wrap">
+        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <input type="text" name="q" value="<%= q %>" placeholder="Search by name, batch year, department, company, or city" aria-label="Search alumni">
+      </div>
+      <button type="submit" class="btn btn-primary">Search</button>
+      <% if (q) { %>
+        <a href="/alumni" class="btn btn-secondary">Clear</a>
+      <% } %>
+    </form>
+
+    <div class="table-card">
+      <% if (rows.length) { %>
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Batch</th>
+              <th>Department</th>
+              <th>Company</th>
+              <th>City</th>
+              <th>Profile</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% rows.forEach(r => { %>
+              <tr>
+                <td class="cell-primary" data-label="Name"><%= r.full_name %></td>
+                <td data-label="Batch"><%= r.graduation_year %></td>
+                <td data-label="Department"><%= r.department %></td>
+                <td data-label="Company"><%= r.company || '—' %></td>
+                <td data-label="City"><%= r.city %></td>
+                <td data-label="Profile"><a href="/profile/<%= r.id %>">View</a></td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      <% } else { %>
+        <div class="table-empty">
+          <p><%= q ? 'No alumni matched your search query.' : 'No alumni have been registered yet.' %></p>
+          <% if (q) { %>
+            <a href="/alumni" class="btn btn-secondary">Reset search</a>
+          <% } else { %>
+            <a href="/register" class="btn btn-primary">Register first alumnus</a>
+          <% } %>
+        </div>
+      <% } %>
+    </div>
   </main>
 <%- include('partials/footer') %>

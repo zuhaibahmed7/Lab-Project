@@ -18,6 +18,10 @@ const transporter = nodemailer.createTransport({
 });
 
 function sendWelcomeEmail(to, fullName) {
+  if (!process.env.MAIL_USER || !process.env.MAIL_PASS) {
+    console.log(`[AI Studio] Skipping welcome email to ${to} (MAIL_USER/MAIL_PASS not configured)`);
+    return Promise.resolve();
+  }
   return transporter.sendMail({
     from: process.env.MAIL_USER || "",
     to,
@@ -154,7 +158,7 @@ app.post("/register", wrap(async (req, res) => {
      f.department, Number(f.graduation_year), f.current_job, f.company, f.city, f.country,
      f.address, hash]);
 
-  req.session.userId = insertInfo.insertId;
+  req.session.userId = result.insertId;
   req.session.userName = f.full_name;
 
   sendWelcomeEmail(f.email, f.full_name)
@@ -171,5 +175,5 @@ app.use((err, req, res, next) => {
   message(res, 500, "Server error", "Something went wrong. Is MySQL running?", "error");
 });
 
-const PORT = process.env.PORT || 3001;
-app.listen(PORT, () => console.log(`Alumni system running at http://localhost:${PORT}`));
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, "0.0.0.0", () => console.log(`Alumni system running at http://0.0.0.0:${PORT}`));
